@@ -40,7 +40,7 @@ jobs:
     displayName: Publish Code Coverage Results
     inputs: 
       codeCoverageTool: Cobertura
-      summaryFileLocation: '$(Build.SourcesDirectory)/CoverageResults/Cobertura.xml'
+      summaryFileLocation: '$(Build.SourcesDirectory)/test-results/Cobertura.xml'
       # summaryFileLocation: '$(System.DefaultWorkingDirectory)/test-results/*coverage.xml'
 
   # For CI runs on master, automatically publish packages
