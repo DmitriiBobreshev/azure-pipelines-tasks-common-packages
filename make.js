@@ -16,6 +16,10 @@ const predefinedFlags = {
 };
 
 const options = minimist(process.argv, predefinedFlags)
+const testResultsPath = path.join(__dirname, 'test-results');
+const mochaReporterPath = path.join(__dirname, 'common-npm-packages', 'build-scripts', 'junit-spec-reporter.js');
+const coverageBaseName = 'cobertura-coverage.xml'
+const summaryBaseName = 'coverage-summary.json';
 
 const printLabel = (name) => {
     console.log('\n----------------------------------');
@@ -49,10 +53,12 @@ if (options.build) {
 }
 
 if (options.test) {
+    const gitkeepName = '.gitkeep';
     console.log('Testing shared npm packages');
     util.cd('common-npm-packages');
     const suite = options.suite || defaultTestSuite;
     let testsFailed = false;
+    util.cleanFolder(testResultsPath, [gitkeepName]);
 
     fs.readdirSync('./', { encoding: 'utf-8' }).forEach(child => {
         if (fs.statSync(child).isDirectory() && !ignoredFolders.includes(child)) {
@@ -63,7 +69,13 @@ if (options.test) {
 
                 if (fs.existsSync(path.join('./', 'Tests', `${suite}.js`))) {
                     try {
-                        util.run(`mocha Tests/${suite}.js`, true);
+                        const suitName = `${child}-suite`;
+                        const mochaOptions = util.createMochaOptions(mochaReporterPath, testResultsPath, suitName);
+
+                        util.run(`c8 --reports-dir ${testResultsPath} mocha ${mochaOptions} Tests/${suite}.js`, true);
+                        util.renameFile(testResultsPath, coverageBaseName, `${child}-coverage.xml`);
+                        util.renameFile(testResultsPath, summaryBaseName, `${child}-summary.json`);
+
                     } catch (err) {
                         testsFailed = true;
                     } finally {
