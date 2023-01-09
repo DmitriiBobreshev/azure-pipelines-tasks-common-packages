@@ -31,7 +31,7 @@ jobs:
       testRunner: JUnit
       testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/*suite.xml'
 
-  - task: reportgenerator@4
+  - task: reportgenerator@5
     inputs:
       reports: '$(Build.SourcesDirectory)/test-results/*coverage.xml'
       targetdir: '$(Build.SourcesDirectory)/CoverageResults'
