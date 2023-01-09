@@ -31,16 +31,16 @@ jobs:
       testRunner: JUnit
       testResultsFiles: '$(System.DefaultWorkingDirectory)/test-results/*suite.xml'
 
-  - task: reportgenerator@5
-    inputs:
-      reports: '$(Build.SourcesDirectory)/test-results/*coverage.xml'
-      targetdir: '$(Build.SourcesDirectory)/CoverageResults'
+  # - task: reportgenerator@5
+  #   inputs:
+  #     reports: '$(Build.SourcesDirectory)/test-results/*coverage.xml'
+  #     targetdir: '$(Build.SourcesDirectory)/CoverageResults'
 
   - task: PublishCodeCoverageResults@1
     displayName: Publish Code Coverage Results
     inputs: 
       codeCoverageTool: Cobertura
-      summaryFileLocation: '$(Build.SourcesDirectory)/CoverageResults/*.xml'
+      summaryFileLocation: '$(Build.SourcesDirectory)/CoverageResults/Cobertura.xml'
       # summaryFileLocation: '$(System.DefaultWorkingDirectory)/test-results/*coverage.xml'
 
   # For CI runs on master, automatically publish packages

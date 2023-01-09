@@ -24,5 +24,8 @@
     "mocha": "^6.2.3",
     "mocha-junit-reporter": "^2.2.0",
     "shelljs": "^0.8.5"
+  },
+  "dependencies": {
+    "cobertura-merge": "^1.0.4"
   }
 }

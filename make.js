@@ -18,7 +18,6 @@ const predefinedFlags = {
 const options = minimist(process.argv, predefinedFlags)
 const testResultsPath = path.join(__dirname, 'test-results');
 const mochaReporterPath = path.join(__dirname, 'common-npm-packages', 'build-scripts', 'junit-spec-reporter.js');
-const mochaFileBase = path.join(__dirname, 'test-results');
 const coverageBaseName = 'cobertura-coverage.xml'
 
 const printLabel = (name) => {
@@ -54,6 +53,7 @@ if (options.build) {
 
 if (options.test) {
     const gitkeepName = '.gitkeep';
+    const coveredFiles = [];
     console.log('Testing shared npm packages');
     util.cd('common-npm-packages');
     const suite = options.suite || defaultTestSuite;
@@ -71,10 +71,14 @@ if (options.test) {
                     try {
                         const suitName = `${child}-suite`;
                         const coverageName = `${child}-coverage.xml`;
-                        const mochaOptions = util.createMochaOptions(mochaReporterPath, mochaFileBase, suitName);
+                        const mochaOptions = util.createMochaOptions(mochaReporterPath, testResultsPath, suitName);
 
                         util.run(`c8 --all --reports-dir ${testResultsPath} mocha ${mochaOptions} Tests/${suite}.js`, true);
                         util.renameFile(testResultsPath, coverageBaseName, coverageName);
+                        coveredFiles.push({
+                            taskName: child,
+                            path: path.join(testResultsPath, coverageName)
+                        });
                     } catch (err) {
                         testsFailed = true;
                     } finally {
@@ -91,5 +95,16 @@ if (options.test) {
     });
     if (testsFailed) {
         throw new Error('Tests failed!');
+    }
+
+    if (coveredFiles.length) {
+        const mergePath = path.join(testResultsPath, 'Cobertura.xml');
+        const coveredFilesString = coveredFiles.
+            map(function(task) {
+                return `${task.taskName}=${task.path}`;
+            }).
+            join(' ');
+
+        util.run(`cobertura-merge -o ${mergePath} ${coveredFilesString}`, true);
     }
 }
