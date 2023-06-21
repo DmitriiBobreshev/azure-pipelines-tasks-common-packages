@@ -49,7 +49,7 @@ async function getPreviousReleaseDate(package) {
 
     const date = await getPRDateFromCommit(prevHash);
     console.log(`Previous version change date for ${package} is ${date}`);
-    return date;
+    return { date, versionHash: currentHash };
 }
 
 
@@ -158,19 +158,50 @@ async function createRelease(releaseNotes, package, version, releaseBranch) {
     console.log(`Release URL: ${newRelease.data.html_url}`);
 }
 
+/**
+ * Function to verify that the new release tag is valid.
+ * @param {string} newRelease  - Sprint version of the checked release
+ * @returns {Promise<boolean>} - true - release exists, false - release does not exist
+ */
+async function isReleaseTagExists(package, version) {
+    try {
+        const tagName = `${package}-${version}`;
+        await octokit.repos.getReleaseByTag({
+            owner: 'DmitriiBobreshev', //OWNER,
+            repo: REPO,
+            tag: tagName
+        });
+
+        return true;
+    } catch (e) {
+        return false
+    }
+}
+
+
 async function createReleaseNotes(package, branch) {
     try {
-        // TODO check that release not exists
         const version = util.getCurrentPackageVersion(package);
+        const isReleaseExists = await isReleaseTagExists(package, version);
+        if (isReleaseExists) {
+            console.log(`Release ${package}-${version} already exists`);
+            return;
+        }
 
-        const date = await getPreviousReleaseDate(package);
-        const data = await getPRsFromDate('main', date);
+
+        const { date, versionHash } = await getPreviousReleaseDate(package);
+        const data = await getPRsFromDate(branch, date);
         console.log(`Found ${data.length} PRs`);
 
         const PRs = await getPRsFiles(data, package);
         const changes = util.getChangesFromPRs(PRs);
+        if (!changes.length) {
+            console.log(`No changes found for ${package}`);
+            return;
+        }
+
         const releaseNotes = changes.join('\n');
-        await createRelease(releaseNotes, package, version, branch);
+        await createRelease(releaseNotes, package, version, versionHash);
     } catch (e) {
         throw new util.CreateReleaseError(e.message);
     }
