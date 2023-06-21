@@ -1,6 +1,6 @@
 const fs = require('fs');
 const util = require('./common-npm-packages/build-scripts/util');
-const releaseNotes = require('./common-npm-packages/build-scripts/create-release-notes');
+const releaseNotes = require('./common-npm-packages/build-scripts/create-release');
 
 console.log('Publishing shared npm packages');
 
