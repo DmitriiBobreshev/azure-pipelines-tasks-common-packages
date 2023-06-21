@@ -43,10 +43,11 @@ jobs:
       summaryFileLocation: $(System.DefaultWorkingDirectory)/test-results/*coverage.xml
 
   # For CI runs on master, automatically publish packages
-#   - bash: |
-#         npm run publish
-#     condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['Agent.OS'], 'Windows_NT'))
-#     env:
-#       NPM_TOKEN: $(npm-automation.token)
-#     displayName: Publish packages (Only Windows)
-#     enabled: true
+  - bash: |
+        npm run publish
+    condition: and(succeeded(), in(variables['build.reason'], 'IndividualCI', 'BatchedCI', 'Manual'), eq(variables['Agent.OS'], 'Windows_NT'))
+    env:
+      NPM_TOKEN: $(npm-automation.token)
+      GH_TOKEN: $(gh-automation.token)
+    displayName: Publish packages (Only Windows)
+    enabled: true
