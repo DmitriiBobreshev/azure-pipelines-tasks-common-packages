@@ -1,5 +1,5 @@
 {
-  "loc.messages.Updatemachinetoenablesecuretlsprotocol": "Компьютер должен использовать протокол TLS 1.2 или более поздней версии. Дополнительные сведения о том, как включить TLS на вашем компьютере: https://aka.ms/enableTlsv2.",
+  "loc.messages.Updatemachinetoenablesecuretlsprotocol": "Компьютер должен использовать протокол TLS 1.2 или более поздней версии. Дополнительные сведения о том, как включить TLS на вашем компьютере, см. на странице https://aka.ms/enableTlsv2.",
   "loc.messages.JarPathNotPresent": "Отсутствует путь к jar-файлу Java.",
   "loc.messages.JSONvariablesubstitutionappliedsuccessfully": "Подстановка переменных JSON успешно применена.",
   "loc.messages.XMLvariablesubstitutionappliedsuccessfully": "Подстановка переменных XML применена.",
@@ -14,7 +14,7 @@
   "loc.messages.FailedToApplyTransformationReason1": "1. Применено ли преобразование к созданному пакету MSBuild во время сборки. Если это так, удалите тег <DependentUpon> для каждой конфигурации в CSPROJ-файле и повторите сборку. ",
   "loc.messages.FailedToApplyTransformationReason2": "2. Убедитесь, что файлы конфигурации и преобразования находятся в одной и той же папке в пакете.",
   "loc.messages.FailedToApplyXMLvariablesubstitutionReason1": "Не удалось применить замену переменных XML. Изменения уже присутствуют в этом пакете.",
-  "loc.messages.MissingArgumentsforXMLTransformation": "Неполные или отсутствующие аргументы. Ожидался формат -transform <transform file> -xml <source file> -result <destinamtion file>. Преобразование и исходный файл являются обязательными входными данными.",
+  "loc.messages.MissingArgumentsforXMLTransformation": "Неполные или отсутствующие аргументы. Ожидается format -transform <transform file> -xml <source file> -result <destination file>. Преобразование и исходный файл являются обязательными входными данными.",
   "loc.messages.MorethanonepackagematchedwithspecifiedpatternPleaserestrainthesearchpattern": "Указанному шаблону соответствует несколько пакетов: %s. Ограничьте шаблон поиска.",
   "loc.messages.JSONvariableSubstitution": "Применение подстановки переменной JSON для %s",
   "loc.messages.SubstitutingValueonKey": "Идет замена значения ключа: %s",
