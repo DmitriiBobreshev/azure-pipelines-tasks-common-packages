@@ -19,7 +19,7 @@ async function publishPackages(packages) {
                 fs.writeFileSync('.npmrc', npmrc);
                 // util.run('npm publish');
                 console.log('some publish command');
-                releaseNotes.createReleaseNotes(package, 'main');
+                await releaseNotes.createReleaseNotes(package, 'main');
             }
             catch(ex) {
                 if (ex instanceof util.createReleaseNotesError) {
