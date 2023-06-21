@@ -22,7 +22,7 @@ async function publishPackages(packages) {
                 await releaseNotes.createReleaseNotes(package, 'main');
             }
             catch(ex) {
-                if (ex instanceof util.createReleaseNotesError) {
+                if (ex instanceof util.CreateReleaseError) {
                     console.log(`Error creating release notes: ${ex.message}`);                    
                 } else {
                     console.log('Publish failed - this usually indicates that the package has already been published');
