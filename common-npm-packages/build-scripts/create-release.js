@@ -49,7 +49,7 @@ async function getPreviousReleaseDate(package) {
 
     const date = await getPRDateFromCommit(prevHash);
     console.log(`Previous version change date for ${package} is ${date}`);
-    return { date, versionHash: currentHash };
+    return date;
 }
 
 
@@ -189,7 +189,7 @@ async function createReleaseNotes(package, branch) {
         }
 
 
-        const { date, versionHash } = await getPreviousReleaseDate(package);
+        const date = await getPreviousReleaseDate(package);
         const data = await getPRsFromDate(branch, date);
         console.log(`Found ${data.length} PRs`);
 
@@ -201,7 +201,7 @@ async function createReleaseNotes(package, branch) {
         }
 
         const releaseNotes = changes.join('\n');
-        await createRelease(releaseNotes, package, version, versionHash);
+        await createRelease(releaseNotes, package, version, branch);
     } catch (e) {
         throw new util.CreateReleaseError(e.message);
     }
